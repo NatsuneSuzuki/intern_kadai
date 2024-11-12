@@ -1,31 +1,52 @@
-#FuelPHP
+# インターン課題環境構築手順
 
-* Version: 1.8
-* [Website](http://fuelphp.com/)
-* [Release Documentation](http://docs.fuelphp.com)
-* [Release API browser](http://api.fuelphp.com)
-* [Development branch Documentation](http://dev-docs.fuelphp.com)
-* [Development branch API browser](http://dev-api.fuelphp.com)
-* [Support Forum](http://fuelphp.com/forums) for comments, discussion and community support
+## Dockerの基本知識
+Dockerの基本的な概念については、以下のリンクを参考にしてください：
+- [Docker入門（1）](https://qiita.com/Sicut_study/items/4f301d000ecee98e78c9)
+- [Docker入門（2）](https://qiita.com/takusan64/items/4d622ce1858c426719c7)
 
-## Description
+## セットアップ手順
 
-FuelPHP is a fast, lightweight PHP 5.3+ framework. In an age where frameworks are a dime a dozen, We believe that FuelPHP will stand out in the crowd.  It will do this by combining all the things you love about the great frameworks out there, while getting rid of the bad.
+1. **リポジトリをクローン**
+   ```bash
+   git clone <リポジトリURL>
+   ```
 
-FuelPHP is fully PHP 7 compatible.
+2. **dockerディレクトリに移動**
+   ```bash
+   cd docker
+   ```
 
-## More information
+3. **データベース名の設定**
+   `docker-compose.yml` 内の `db` サービスにある `MYSQL_DATABASE` の値を、各自任意のデータベース名に設定してください。
+   
+   例:
+   ```yaml
+   environment:
+     MYSQL_ROOT_PASSWORD: root
+     MYSQL_DATABASE: <your_database_name>  # 任意のデータベース名を指定
+   ```
 
-For more detailed information, see the [development wiki](https://github.com/fuelphp/fuelphp/wiki).
+4. **Dockerイメージのビルド**
+   ```bash
+   docker-compose build
+   ```
 
-##Development Team
+5. **コンテナの起動**
+   ```bash
+   docker-compose up -d
+   ```
 
-* Harro Verton - Project Manager, Developer ([http://wanwizard.eu/](http://wanwizard.eu/))
-* Steve West - Core Developer, ORM
-* Márk Sági-Kazár - Developer
+## MySQLコンテナ設定
+このプロジェクトには、MySQLを使用するDBコンテナが含まれています。設定は以下の通りです。
 
-### Want to join?
+- **MySQLバージョン**: 8.0
+- **ポート**: `3306`
+- **環境変数**:
+  - `MYSQL_ROOT_PASSWORD`: root
+  - `MYSQL_DATABASE`: 各自設定したデータベース名
 
+<<<<<<< HEAD
 The FuelPHP development team is always looking for new team members, who are willing
 to help lift the framework to the next level, and have the commitment to not only
 produce awesome code, but also great documentation, and support to our users.
@@ -42,3 +63,11 @@ are up to scratch, we will notice you, and will ask you to become a team member.
 * Dan Horrigan - Founder, Developer ([http://dhorrigan.com](http://dhorrigan.com))
 # intern_kadai
 >>>>>>> 22b0c4f (first commit)
+=======
+### アクセス情報
+- **ホスト**: `localhost`
+- **ポート**: `3306`
+- **ユーザー名**: `root`
+- **パスワード**: `root`
+- **データベース名**: 各自設定した名前
+>>>>>>> 426a06d (構築手順まとめ)
