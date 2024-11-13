@@ -36,6 +36,17 @@ Dockerの基本的な概念については、以下のリンクを参考にし�
    ```bash
    docker-compose up -d
    ```
+6. **ブラウザからlocalhostにアクセス**
+
+## PHP周りのバージョン
+- **PHP**: 7.3
+- **FuelPHP**: 1.8
+
+## ログについて
+- **アクセスログ**: Dockerのコンテナのログ
+- **FuelPHPのエラーログ**: /var/www/html/intern_kadai/fuel/app/logs/
+  - 年月日ごとにログが管理されている
+  - tail -f {見たいログファイル}でログを出力
 
 ## MySQLコンテナ設定
 このプロジェクトには、MySQLを使用するDBコンテナが含まれています。設定は以下の通りです。
