@@ -82,3 +82,4 @@ are up to scratch, we will notice you, and will ask you to become a team member.
 - **パスワード**: `root`
 - **データベース名**: 各自設定した名前
 >>>>>>> 426a06d (構築手順まとめ)
+---
