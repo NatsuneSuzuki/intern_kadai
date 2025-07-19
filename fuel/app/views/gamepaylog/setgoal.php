@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>課金ログ</title>
+    <script src="https://cdn.jsdelivr.net/npm/knockout@3.5.1/build/output/knockout-latest.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+<header><p class="logo">課金ログ</p></header>
+    
+     <!-- 前月・来月へのリンク -->
+    <?php
+    $prev_month = $month - 1;
+    $prev_year = $year;
+    if ($prev_month < 1) {
+        $prev_month = 12;
+        $prev_year--;
+    }
+
+    $next_month = $month + 1;
+    $next_year = $year;
+    if ($next_month > 12) {
+        $next_month = 1;
+        $next_year++;
+    }
+    ?>
+    <div>
+        <a href="<?php echo Uri::create('gamepaylog'); ?>?year=<?= $prev_year ?>&month=<?= $prev_month ?>">
+            <?= $prev_month ?>月 
+        </a>
+        <a href="<?php echo Uri::create('gamepaylog'); ?>?year=<?= $next_year ?>&month=<?= $next_month ?>">
+            <?= $next_month ?>月
+        </a>
+    </div>
+
+    <div class="title">
+    <p class="number_text"><?php echo htmlspecialchars($month, ENT_QUOTES, 'UTF-8'); ?></p>
+    <p class="nomal_text">月の目標課金額を設定しよう！</p>
+    </div>
+
+    <form action="<?php echo Uri::create('gamepaylog/setgoal'); ?>" method="post">
+        <label>
+            <input type="number" name="goal_amount" min="0" required>円
+        </label>
+        <input type="hidden" name="year" value="<?php echo htmlspecialchars($year, ENT_QUOTES, 'UTF-8'); ?>">
+        <input type="hidden" name="month" value="<?php echo htmlspecialchars($month, ENT_QUOTES, 'UTF-8'); ?>">
+        <button type="submit">設定</button>
+    </form>
+</body>
+</html>

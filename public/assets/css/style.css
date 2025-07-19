@@ -1,0 +1,173 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: #ffffff;
+  font-family: sans-serif;
+}
+
+/*ヘッダー*/
+header {
+  height: 70px;
+  width: 100%;
+  background: linear-gradient(to right, #8ed2cc, #c6fff5);
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  border-bottom: 2px solid #8ed2cc;
+}
+.logo {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "IBM Plex Sans";
+}
+
+/*文字*/
+.nomal_text {
+  color: #908e8e;
+  font-size: 28px;
+  font-weight: 600;
+  font-family: "IBM Plex Sans";
+}
+.number_text {
+  color: #81c4b8;
+  font-size: 32px;
+  font-weight: 600;
+  font-family: "IBM Plex Sans";
+}
+.number_text_big {
+  color: #81c4b8;
+  font-size: 40px;
+  font-weight: 600;
+  font-family: "IBM Plex Sans";
+}
+.monthly_goal {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+.caution {
+  color: #fc8d8d;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "IBM Plex Sans";
+}
+.no_data {
+  color: #fc8d8d;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "IBM Plex Sans";
+}
+.monthly_result {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16px;
+  margin-top: 30px;
+  margin-left: 350px;
+}
+.title {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+.nomal_text_small {
+  color: #908e8e;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "IBM Plex Sans";
+}
+
+/*表のデザイン*/
+table {
+  box-shadow: -4px -4px 8px #fff, 4px 4px 8px rgb(0 0 0 / 24%);
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  max-width: 650px;
+  border-radius: 20px;
+  overflow: hidden;
+  text-align: center;
+  color: #838181;
+  font-size: 16px;
+  font-family: "IBM Plex Sans";
+}
+table tr {
+  background-color: #f0f0f0;
+}
+table tr:nth-child(even) {
+  background-color: #d9d9d9;
+}
+table th,
+table td {
+  padding: 15px 8px;
+  line-height: 1.2;
+}
+table thead th {
+  background-color: #a8e1d7;
+  color: #ffffff;
+  font-family: "IBM Plex Sans";
+  text-align: center;
+  border-bottom: 5px solid #a7d7ce;
+  font-size: 18px;
+}
+@media screen and (max-width: 787px) {
+  table {
+    border-radius: 0;
+    text-align: left;
+  }
+  table thead {
+    display: none;
+  }
+  table tr {
+    background-color: unset;
+  }
+  table th,
+  table td {
+    display: block;
+    border: 0;
+    border-bottom: 1px solid #d9d9d9;
+  }
+  table tbody th {
+    background: #d9d9d9;
+    text-align: center;
+  }
+}
+table tbody td {
+  border-right: 5px solid white;
+}
+
+table tbody tr td:last-child {
+  border-right: none;
+}
+
+/*その他*/
+.result_view {
+  margin-top: 50px;
+  justify-content: center;
+  display: flex;
+}
+
+.button {
+  border-radius: 50px;
+  background-color: #81c4b8;
+  width: 150px; /* 横幅を少し広げる */
+  height: 50px; /* 高さも指定して見た目を整える */
+  font-size: 18px; /* 文字も少し大きくする */
+  font-family: "IBM Plex Sans";
+  padding: 10px 20px; /* 内側の余白も増やすと押しやすくなる */
+  color: white; /* テキストを見やすく */
+  border: none; /* 枠線を消すとフラットな印象に */
+  cursor: pointer; /* ホバー時にクリック感を出す */
+  text-align: center;
+}
+
+.box_1 {
+  display: flex;
+  margin-bottom: 10px;
+  gap: 200px;
+  align-items: center;
+}

@@ -8,7 +8,8 @@ return array(
 		'type'        => 'mysqli',
 		'connection'  => array(
 			'hostname'   => 'db',
-			'database'   => 'fuelphp',
+			//'database'   => 'fuelphp',
+			'database' => 'ns_db',
 			'username'   => 'root',
 			'password'   => 'root',
 			'persistent' => false,
