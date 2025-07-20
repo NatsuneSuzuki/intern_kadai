@@ -1,10 +1,5 @@
 <?php
-/*
-use Model\Monthlygoals;
-use Model\Monthlypayment;
-use Model\Payment;
-use Model\Game;
-*/
+
 class Controller_Gamepaylog extends Controller
 {
     protected $year;
@@ -16,12 +11,11 @@ class Controller_Gamepaylog extends Controller
         //タイムゾーンをセット
         date_default_timezone_set(Config::get('default_timezone', 'UTC'));
 
-
-        // GETパラメータ or 今月を取得
+        //GETパラメータ or 今月を取得
         $this->year = (int) \Input::get('year', date('Y'));
         $this->month = (int) \Input::get('month', date('n'));
 
-        // 月補正
+        //月末、月初の補正
         if ($this->month < 1) {
             $this->month = 12;
             $this->year--;
@@ -39,13 +33,13 @@ class Controller_Gamepaylog extends Controller
     $year = $this->year;
     $month = $this->month;
 
-    // 月末>月初の補正
+    //月末、月初の補正
     if ($month < 1) {
         $month = 12;
-        $year -= 1;
+        $year --;
     } elseif ($month > 12) {
         $month = 1;
-        $year += 1;
+        $year ++;
     }
 
     $monthly_payment = \DB::select('mp.*', 'mg.goal_amount')
@@ -96,85 +90,16 @@ class Controller_Gamepaylog extends Controller
     ]);
 }
 
-    /*Modelを使う場合 */
-    /*
-    public function action_index()
-{
-    $year = (int) \Input::get('year', date('Y'));
-    $month = (int) \Input::get('month', date('n'));
 
-
-    if ($month < 1) {
-        $month = 12;
-        $year -= 1;
-    } elseif ($month > 12) {
-        $month = 1;
-        $year += 1;
-    }
-
-    $monthly_payment = Monthlypayment::find('first', [
-        'where' => [
-            ['year', $year],
-            ['month', $month],
-        ],
-        'related' => ['goal'],
-    ]);
-
-    if (empty($monthly_payment)) {
-        \Response::redirect("gamepaylog/setgoal?year={$year}&month={$month}");
-    }
-
-    $payments = Payment::query()
-        ->related('game')
-        ->where(\DB::expr('YEAR(payment_date)'), '=', $year)
-        ->where(\DB::expr('MONTH(payment_date)'), '=', $month)
-        ->order_by('payment_date', 'asc')
-        ->get();
-
-    $json_data = [];
-    foreach ($payments as $p) {
-        $json_data[] = [
-            'id' => $p->id,
-            'name' => $p->game ? $p->game->name : '（未登録）',
-            'payment_date' => $p->payment_date,
-            'amount' => $p->amount,
-        ];
-    }
-    $json_data = json_encode($json_data, JSON_UNESCAPED_UNICODE);
-
-    $game_sums_raw = \DB::select('games.name', \DB::expr('SUM(payments.amount) AS total'))
-        ->from('payments')
-        ->join('games', 'LEFT')->on('payments.games_id', '=', 'games.id')
-        ->where(\DB::expr('YEAR(payment_date)'), '=', $year)
-        ->and_where(\DB::expr('MONTH(payment_date)'), '=', $month)
-        ->group_by('games.name')
-        ->execute()
-        ->as_array();
-
-    $json_game_sums = json_encode($game_sums_raw, JSON_UNESCAPED_UNICODE);
-
-    return View::forge('gamepaylog/index', [
-        'year' => $year,
-        'month' => $month,
-        'monthly_payment' => $monthly_payment,
-        'payments' => $payments,
-        'json_data' => $json_data,
-        'json_game_sums' => $json_game_sums,
-        'no_payments' => empty($payments),
-        'over_goal' => $monthly_payment->total_amount > $monthly_payment->goal->goal_amount,
-    ]);
-}*/
-
-
-    // 課金データ登録フォーム表示
+    //課金データ追加
     public function action_create()
     {
-        // ゲームリストを取得（フォームのセレクト用）
+        //ゲームリストを取得（select）
         $games = \DB::select('id', 'name')->from('games')->execute()->as_array();
         return View::forge('gamepaylog/create', ['games' => $games]);
     }
 
-    // 登録処理
+    //登録処理
     public function action_store()
     {
     if (\Input::method() === 'POST')
@@ -182,35 +107,34 @@ class Controller_Gamepaylog extends Controller
         $games_id = \Input::post('games_id');
         $new_game_name = trim(\Input::post('new_game_name'));
 
-        // 新規ゲーム名があれば重複チェックして追加
+        //新規ゲームの追加
         if ($new_game_name !== '')
         {
             $exists = \DB::select()->from('games')->where('name', $new_game_name)->execute()->count();
             if ($exists > 0)
             {
-                // エラー処理例：新規ゲーム名が重複している場合は登録せずエラーを返すなど
-                // 今回はシンプルにリダイレクトに戻す想定
-                \Session::set_flash('error', '新しいゲーム名が既に存在します。');
+                //重複時は登録しない
+                \Session::set_flash('error', '新しいタイトルが既に存在します。');
                 \Response::redirect('gamepaylog/create');
             }
             else
             {
                 list($insert_id, ) = \DB::insert('games')->set(['name' => $new_game_name])->execute();
-                $games_id = $insert_id;  // 新規追加のゲームIDを使う
+                $games_id = $insert_id;  //新規ゲームIDを使用
             }
         }
-        // paymentsテーブルに登録
+        //paymentsテーブルに登録
         \DB::insert('payments')->set([
             'games_id' => $games_id,
             'payment_date' => \Input::post('payment_date'),
             'amount' => \Input::post('amount'),
         ])->execute();
 
-        // 合計金額更新
+        //合計金額更新
         $payment_date = \Input::post('payment_date');
         $year = (int)\Input::post('year');
         $month = (int)\Input::post('month');
-        $this->updateMonthlyTotal($year, $month);
+        $this->update_monthly_total($year, $month);
 
         \Response::redirect("gamepaylog?year={$year}&month={$month}");
     }
@@ -219,7 +143,7 @@ class Controller_Gamepaylog extends Controller
         
     }
 
-
+    //課金データ編集
     public function action_edit($id = null)
 {
     if ($id === null)
@@ -235,7 +159,7 @@ class Controller_Gamepaylog extends Controller
 
     $games = \DB::select('id', 'name')->from('games')->execute()->as_array();
 
-    // GETパラメータからyear, monthを取得（なければ支払い日の年月から取る）
+    //年月取得(年月が未指定の場合、日付から取得)
     $year = (int) \Input::get('year');
     $month = (int) \Input::get('month');
     if (!$year || !$month) {
@@ -251,7 +175,7 @@ class Controller_Gamepaylog extends Controller
     ]);
 }
 
-
+    //課金データ更新
    public function action_update($id = null)
 {
     if ($id === null || \Input::method() !== 'POST')
@@ -275,17 +199,17 @@ class Controller_Gamepaylog extends Controller
             ->where('id', $id)
             ->execute();
 
-        // 年月取得（hiddenから）
+        //年月取得
         $year = (int) \Input::post('year');
         $month = (int) \Input::post('month');
 
-        $this->updateMonthlyTotal($year, $month);
+        $this->update_monthly_total($year, $month);
 
         \Response::redirect("gamepaylog?year={$year}&month={$month}");
     }
     else
     {
-        // バリデーション失敗時は編集画面に戻す
+        //不バリデーションエラーの場合、修正ページに戻る
         $payment = \DB::select()->from('payments')->where('id', $id)->execute()->current();
         $games = \DB::select('id', 'name')->from('games')->execute()->as_array();
 
@@ -303,19 +227,19 @@ class Controller_Gamepaylog extends Controller
 }
 
 
-    // 削除処理（即削除）
+    //削除処理
     public function action_delete($id = null)
 {
     if ($id !== null)
     {
-        // 削除前に該当レコード取得
+        //削除前に該当レコード取得
         $payment = \DB::select()->from('payments')->where('id', $id)->execute()->current();
         if ($payment)
         {
             $year = (int) \Input::get('year');
             $month = (int) \Input::get('month');
 
-            // 年月が未指定の場合は支払い日から取得
+            //年月が未指定の場合、日付から取得
             if (!$year || !$month) {
                 $year = (int) date('Y', strtotime($payment['payment_date']));
                 $month = (int) date('n', strtotime($payment['payment_date']));
@@ -323,7 +247,7 @@ class Controller_Gamepaylog extends Controller
 
             \DB::delete('payments')->where('id', $id)->execute();
 
-            $this->updateMonthlyTotal($year, $month);
+            $this->update_monthly_total($year, $month);
         }
     }
     \Response::redirect("gamepaylog?year={$year}&month={$month}");
@@ -338,12 +262,12 @@ class Controller_Gamepaylog extends Controller
         $month = (int)\Input::post('month');
         $goal_amount = (int)\Input::post('goal_amount');
 
-        // 目標額をmonthly_goalsに登録
+        //目標額をmonthly_goalsに登録
         list($result, $goals_id) = \DB::insert('monthly_goals')
             ->set(['goal_amount' => $goal_amount])
             ->execute();
 
-        // monthly_paymentに登録
+        //monthly_paymentに登録
         \DB::insert('monthly_payment')
             ->set([
                 'goals_id' => $goals_id,
@@ -355,7 +279,6 @@ class Controller_Gamepaylog extends Controller
 
         \Response::redirect("gamepaylog?year={$year}&month={$month}");
     } else {
-        //フォーム表示（URLのパラメータから年・月を取得）
         $year = (int)\Input::get('year', date('Y'));
         $month = (int)\Input::get('month', date('n'));
 
@@ -368,9 +291,9 @@ class Controller_Gamepaylog extends Controller
 
     
 
-protected function updateMonthlyTotal($year, $month)
+protected function update_monthly_total($year, $month)
 {
-    // 合計金額を取得
+    //合計金額を取得
     $total = \DB::select(\DB::expr('SUM(amount) as total'))
         ->from('payments')
         ->where(\DB::expr('YEAR(payment_date)'), '=', $year)
@@ -380,7 +303,7 @@ protected function updateMonthlyTotal($year, $month)
 
     $total = $total ?: 0;
 
-    // レコードを更新
+    //レコード更新
     \DB::update('monthly_payment')
         ->value('total_amount', $total)
         ->where('year', $year)

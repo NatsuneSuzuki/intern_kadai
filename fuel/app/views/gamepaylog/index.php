@@ -28,20 +28,38 @@
         $next_year++;
     }
     ?>
-    <div>
-        <a href="?year=<?= $prev_year ?>&month=<?= $prev_month ?>"><?= $prev_month ?>月 </a>
-        <a href="?year=<?= $next_year ?>&month=<?= $next_month ?>"><?= $next_month ?>月</a>
+    <div class="button-container">
+        <a class="angled_button_left" href="?year=<?= $prev_year ?>&month=<?= $prev_month ?>"><?= $prev_month ?>月 </a>
+        <a class="angled_button_right" href="?year=<?= $next_year ?>&month=<?= $next_month ?>"><?= $next_month ?>月</a>
     </div>
+
+    <!-- 課金情報なし -->
+    <?php if ($no_payments): ?>
+        <div class="box_center box_border">
+            <div class="monthly_goal">
+            <p class="number_text"><?php echo $month; ?></p>
+            <p class="nomal_text">月の目標額　</p>
+            <p class="number_text_big"><?php echo $monthly_payment['goal_amount']; ?></p>
+            <p class="nomal_text">円</p>
+        </div>
+        <p class="no_payments message">今月はまだ課金してないよ！</p>
+        <a class="button" href="<?php echo Uri::create("gamepaylog/create?year={$year}&month={$month}"); ?>">＋ 追加</a>
+    </div>
+    <?php endif; ?>
 
     <div class="result_view">
     <div>
     <!-- 目標額表示 -->
     <div class="monthly_goal">
-        <p class="number_text"><?php echo $month; ?></p>
-        <p class="nomal_text">月の目標額　</p>
-        <p class="number_text_big"><?php echo $monthly_payment['goal_amount']; ?></p>
-        <p class="nomal_text">円</p>
+        <?php if ($no_payments): ?>
+        <?php else: ?>
+            <p class="number_text"><?php echo $month; ?></p>
+            <p class="nomal_text">月の目標額　</p>
+            <p class="number_text_big"><?php echo $monthly_payment['goal_amount']; ?></p>
+            <p class="nomal_text">円</p>
+        <?php endif; ?>
     </div>
+    
 
     <!-- 円グラフ表示 -->
     <?php if (!$no_payments): ?>
@@ -56,16 +74,22 @@
     <div class="box_1">
     <!-- メッセージ表示 -->
     <div> 
-    <?php if ($no_payments): ?>
-    <p class="no_data">今月はまだ課金してないよ！</p>
-    <?php endif; ?>
     <?php if ($over_goal): ?>
-    <p class="caution">目標額を超過しています！</p>
+        <div class="caution message">
+            <?= Asset::img('sentiment_very_dissatisfied_57dp_FC8D8D.png') ?>
+            <p>目標額を超過しています！</p>
+        </div>
+    <?php else: ?>
+        <div class="none message"></div>
     <?php endif; ?>
     </div>
 
     <!-- 新規追加ボタン -->
-    <a class="button" href="<?php echo Uri::create("gamepaylog/create?year={$year}&month={$month}"); ?>">追加</a>
+    <?php if ($no_payments): ?>
+    <?php else: ?>
+        <a class="button" href="<?php echo Uri::create("gamepaylog/create?year={$year}&month={$month}"); ?>">＋ 追加</a>
+    <?php endif; ?>
+    
     </div>
 
     <!-- 一覧表示 -->
@@ -92,8 +116,8 @@
                 <td data-bind="text: name"></td>
                 <td data-bind="text: '¥' + amount()"></td>
                 <td>
-                    <a data-bind="attr: { href: '<?= Uri::create("gamepaylog/edit/") ?>' + id }">編集</a> |
-                    <a data-bind="attr: { href: '<?= Uri::create("gamepaylog/delete/") ?>' + id + '?year=<?= $year ?>&month=<?= $month ?>' }">削除</a>
+                    <a data-bind="attr: { href: '<?= Uri::create("gamepaylog/edit/") ?>' + id }"><?= Asset::img('_i_icon_11095_icon_110950_16.png') ?></a> |
+                    <a data-bind="attr: { href: '<?= Uri::create("gamepaylog/delete/") ?>' + id + '?year=<?= $year ?>&month=<?= $month ?>' }"><?= Asset::img('_i_icon_11988_icon_119880_16.png') ?></a>
                 </td>
 
             </tr>

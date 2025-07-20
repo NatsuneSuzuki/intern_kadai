@@ -11,7 +11,7 @@
  */
 
 return array(
-	'default_timezone' => 'Asia/Tokyo',
+	'default_timezone' => 'Asia/Tokyo',//タイムゾーンの設定
 
 	/**
 	 * base_url - The base URL of the application.

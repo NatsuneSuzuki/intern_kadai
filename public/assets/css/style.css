@@ -7,6 +7,36 @@ body {
   background-color: #ffffff;
   font-family: sans-serif;
 }
+input,
+select {
+  background-color: #f5f5f5;
+  border: 1px solid #d7d5d5;
+  border-radius: 40px;
+  font-size: 16px;
+  font-family: "IBM Plex Sans";
+  padding: 10px 25px;
+  color: #626060;
+  margin-left: 30px;
+}
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 10px 40px 10px 20px;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23626060' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px 16px;
+}
+
+label {
+  display: flex;
+  align-items: center;
+}
+
+form {
+  margin-bottom: 20px;
+}
 
 /*ヘッダー*/
 header {
@@ -33,6 +63,12 @@ header {
   font-weight: 600;
   font-family: "IBM Plex Sans";
 }
+.nomal_text_small {
+  color: #908e8e;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "IBM Plex Sans";
+}
 .number_text {
   color: #81c4b8;
   font-size: 32px;
@@ -52,16 +88,19 @@ header {
 }
 .caution {
   color: #fc8d8d;
+  display: flex;
+  align-items: center;
+}
+.no_payments {
+  color: #908e8e;
+}
+.message {
+  width: 300px;
   font-size: 20px;
   font-weight: 600;
   font-family: "IBM Plex Sans";
 }
-.no_data {
-  color: #fc8d8d;
-  font-size: 20px;
-  font-weight: 600;
-  font-family: "IBM Plex Sans";
-}
+
 .monthly_result {
   display: flex;
   align-items: baseline;
@@ -74,14 +113,23 @@ header {
   align-items: baseline;
   margin-bottom: 16px;
 }
-.nomal_text_small {
-  color: #908e8e;
-  font-size: 20px;
-  font-weight: 600;
+
+.label_text {
+  background-color: #a8e1d7;
+  font-size: 18px;
   font-family: "IBM Plex Sans";
+  color: #ffffff;
+  text-align: center;
+  border: 2px solid #ffffff;
+  border-radius: 40px;
+  padding: 10px 25px;
+  width: 150px;
+}
+.new_game {
+  margin-left: 200px;
 }
 
-/*表のデザイン*/
+/*表*/
 table {
   box-shadow: -4px -4px 8px #fff, 4px 4px 8px rgb(0 0 0 / 24%);
   border-collapse: collapse;
@@ -144,25 +192,12 @@ table tbody tr td:last-child {
   border-right: none;
 }
 
-/*その他*/
+/*コンテナ*/
 .result_view {
   margin-top: 50px;
   justify-content: center;
   display: flex;
-}
-
-.button {
-  border-radius: 50px;
-  background-color: #81c4b8;
-  width: 150px; /* 横幅を少し広げる */
-  height: 50px; /* 高さも指定して見た目を整える */
-  font-size: 18px; /* 文字も少し大きくする */
-  font-family: "IBM Plex Sans";
-  padding: 10px 20px; /* 内側の余白も増やすと押しやすくなる */
-  color: white; /* テキストを見やすく */
-  border: none; /* 枠線を消すとフラットな印象に */
-  cursor: pointer; /* ホバー時にクリック感を出す */
-  text-align: center;
+  gap: 50px;
 }
 
 .box_1 {
@@ -170,4 +205,93 @@ table tbody tr td:last-child {
   margin-bottom: 10px;
   gap: 200px;
   align-items: center;
+}
+
+.box_center {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.box_left {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+.box_right {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+}
+
+.box_border {
+  width: 35%;
+  height: 300px;
+  box-shadow: -4px -4px 8px #fff, 4px 4px 8px rgb(0 0 0 / 24%);
+  border: 1px solid #e0e0e0;
+  border-radius: 50px;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  padding-left: 80px;
+  padding-right: 50px;
+  gap: 15px;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+/*ボタン*/
+button,
+.button {
+  display: inline-block;
+  box-shadow: -4px -4px 8px #fff, 4px 4px 8px rgb(0 0 0 / 24%);
+  border-radius: 50px;
+  background-color: #a8e1d7;
+  width: 150px;
+  height: 50px;
+  font-size: 18px;
+  font-family: "IBM Plex Sans";
+  padding: 10px 20px;
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+  border: 2px solid #ffffff;
+}
+
+button:hover,
+.button:hover {
+  background-color: #ffffff;
+  border: 2px solid #a8e1d7;
+  color: #a8e1d7;
+}
+
+.angled_button_right,
+.angled_button_left {
+  text-decoration: none;
+  background-color: #81c4b8;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.angled_button_left {
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 15% 100%, 0 50%);
+}
+
+.angled_button_right {
+  clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%);
 }

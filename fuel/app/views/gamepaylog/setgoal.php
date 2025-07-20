@@ -9,7 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-<header><p class="logo">課金ログ</p></header>
+<header>
+    <p class="logo">課金ログ</p>
+</header>
     
      <!-- 前月・来月へのリンク -->
     <?php
@@ -27,27 +29,38 @@
         $next_year++;
     }
     ?>
-    <div>
-        <a href="<?php echo Uri::create('gamepaylog'); ?>?year=<?= $prev_year ?>&month=<?= $prev_month ?>">
+    <div class="button-container">
+        <a class="angled_button_left" href="<?php echo Uri::create('gamepaylog'); ?>?year=<?= $prev_year ?>&month=<?= $prev_month ?>">
             <?= $prev_month ?>月 
         </a>
-        <a href="<?php echo Uri::create('gamepaylog'); ?>?year=<?= $next_year ?>&month=<?= $next_month ?>">
+        <a class="angled_button_right" href="<?php echo Uri::create('gamepaylog'); ?>?year=<?= $next_year ?>&month=<?= $next_month ?>">
             <?= $next_month ?>月
         </a>
     </div>
 
-    <div class="title">
-    <p class="number_text"><?php echo htmlspecialchars($month, ENT_QUOTES, 'UTF-8'); ?></p>
-    <p class="nomal_text">月の目標課金額を設定しよう！</p>
+    <div class="box_center box_border">
+            <div class="title  box_left">
+                <p class="number_text"><?php echo htmlspecialchars($month, ENT_QUOTES, 'UTF-8'); ?></p>
+                <p class="nomal_text_small">月の目標課金額を設定しよう！</p>
+            </div>
+        
+            <form action="<?php echo Uri::create('gamepaylog/setgoal'); ?>" method="post">    
+                <div class="box_left">    
+                <label>
+                    <input type="number" name="goal_amount" min="0" required>
+                    <p class="nomal_text_small">円</p>
+                </label>
+                <input type="hidden" name="year" value="<?php echo htmlspecialchars($year, ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="hidden" name="month" value="<?php echo htmlspecialchars($month, ENT_QUOTES, 'UTF-8'); ?>">
+                </div>
+
+                <div  class="box_right">
+                    <button type="submit">設定</button>
+                </div>
+            </form>
+        
     </div>
 
-    <form action="<?php echo Uri::create('gamepaylog/setgoal'); ?>" method="post">
-        <label>
-            <input type="number" name="goal_amount" min="0" required>円
-        </label>
-        <input type="hidden" name="year" value="<?php echo htmlspecialchars($year, ENT_QUOTES, 'UTF-8'); ?>">
-        <input type="hidden" name="month" value="<?php echo htmlspecialchars($month, ENT_QUOTES, 'UTF-8'); ?>">
-        <button type="submit">設定</button>
-    </form>
+
 </body>
 </html>
