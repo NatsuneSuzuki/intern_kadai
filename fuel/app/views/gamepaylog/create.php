@@ -106,7 +106,7 @@
             });
         }
 
-        //入力のたびに保存
+        //入力のたび保存
         fields.forEach(field => {
             const input = document.querySelector(`[name="${field}"]`);
             if (input) {
