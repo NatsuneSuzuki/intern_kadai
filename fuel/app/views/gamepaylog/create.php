@@ -1,7 +1,3 @@
-<?php
-$year = isset($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
-$month = isset($_GET['month']) ? (int)$_GET['month'] : (int)date('n');
-?>
 <!DOCTYPE html>
 <html>
 

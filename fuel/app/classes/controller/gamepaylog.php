@@ -11,7 +11,7 @@ class Controller_Gamepaylog extends Controller
         //タイムゾーンをセット
         date_default_timezone_set(Config::get('default_timezone', 'UTC'));
 
-        //GETパラメータ or 今月を取得
+        //指定された年月を取得(指定がなければ今年、今月を取得)
         $this->year = (int) \Input::get('year', date('Y'));
         $this->month = (int) \Input::get('month', date('n'));
 
@@ -91,12 +91,17 @@ class Controller_Gamepaylog extends Controller
     }
 
 
-    //課金データ追加
+    //課金データの追加
     public function action_create()
     {
-        //ゲームリストを取得（select）
+        //ゲームのリストを取得（select）
         $games = \DB::select('id', 'name')->from('games')->execute()->as_array();
-        return View::forge('gamepaylog/create', ['games' => $games]);
+
+        return View::forge('gamepaylog/create', [
+            'games' => $games,
+            'year' => $this->year,
+            'month' => $this->month,
+        ]);
     }
 
     //登録処理
@@ -149,7 +154,7 @@ class Controller_Gamepaylog extends Controller
         }
     }
 
-    //課金データ編集
+    //課金データの編集
     public function action_edit($id = null)
     {
         if ($id === null) {
@@ -227,7 +232,7 @@ class Controller_Gamepaylog extends Controller
     }
 
 
-    //削除処理
+    //課金データの削除
     public function action_delete($id = null)
     {
         if ($id !== null) {
@@ -291,7 +296,7 @@ class Controller_Gamepaylog extends Controller
 
     protected function update_monthly_total($year, $month)
     {
-        //合計金額を取得
+        //合計課金額を取得
         $total = \DB::select(\DB::expr('SUM(amount) as total'))
             ->from('payments')
             ->where(\DB::expr('YEAR(payment_date)'), '=', $year)
@@ -301,7 +306,7 @@ class Controller_Gamepaylog extends Controller
 
         $total = $total ?: 0;
 
-        //レコード更新
+        //更新
         \DB::update('monthly_payment')
             ->value('total_amount', $total)
             ->where('year', $year)
