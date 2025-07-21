@@ -292,3 +292,5 @@ WARNING - 2025-07-20 23:36:40 --> Fuel\Core\Fuel::init - The configured locale e
 WARNING - 2025-07-20 23:36:53 --> Fuel\Core\Fuel::init - The configured locale en_US is not installed on your system.
 WARNING - 2025-07-20 23:36:57 --> Fuel\Core\Fuel::init - The configured locale en_US is not installed on your system.
 WARNING - 2025-07-20 23:36:58 --> Fuel\Core\Fuel::init - The configured locale en_US is not installed on your system.
+WARNING - 2025-07-20 23:41:57 --> Fuel\Core\Fuel::init - The configured locale en_US is not installed on your system.
+WARNING - 2025-07-20 23:42:24 --> Fuel\Core\Fuel::init - The configured locale en_US is not installed on your system.
