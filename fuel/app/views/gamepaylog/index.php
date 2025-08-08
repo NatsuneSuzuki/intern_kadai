@@ -48,7 +48,8 @@
             <div class="monthly_goal">
                 <p class="number_text"><?php echo $month; ?></p>
                 <p class="nomal_text">月の目標額　</p>
-                <p class="number_text_big"><?php echo $monthly_payment['goal_amount']; ?></p>
+                <p class="number_text_big"><?php echo $monthly_payment->goal->goal_amount; ?>
+                </p>
                 <p class="nomal_text">円</p>
             </div>
             <p class="no_payments message">今月はまだ課金してないよ！</p>
@@ -64,7 +65,8 @@
                 <?php else: ?>
                     <p class="number_text"><?php echo $month; ?></p>
                     <p class="nomal_text">月の目標額　</p>
-                    <p class="number_text_big"><?php echo $monthly_payment['goal_amount']; ?></p>
+                    <p class="number_text_big"><?php echo $monthly_payment->goal->goal_amount; ?>
+                    </p>
                     <p class="nomal_text">円</p>
                 <?php endif; ?>
             </div>
