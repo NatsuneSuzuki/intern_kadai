@@ -265,22 +265,19 @@ class Controller_Gamepaylog extends Controller
     {
         if ($id !== null) {
             //削除前に該当レコード取得
-
             $payment = Payment::find($id);
             if ($payment) {
+                //日付から年月を取得
                 $year = (int) date('Y', strtotime($payment->payment_date));
                 $month = (int) date('n', strtotime($payment->payment_date));
                 $payment->delete();
                 $this->update_monthly_total($year, $month);
+                \Response::redirect("gamepaylog?year={$year}&month={$month}");
             }
         }
-        //年月が未指定の場合、日付から取得
-        if (!$year || !$month) {
-            $year = (int) date('Y');
-            $month = (int) date('n');
-        }
-        \Response::redirect("gamepaylog?year={$year}&month={$month}");
+        \Response::redirect("gamepaylog");
     }
+
 
 
     //目標課金額設定
